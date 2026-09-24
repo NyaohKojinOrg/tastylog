@@ -26,13 +26,6 @@ jobs:
     name: Preview
     runs-on: ubuntu-latest
     steps:
-      - name: Debug check role ARN
-        run: |
-          if [ "${{ secrets.AWS_IAM_ROLE_ARN }}" = "arn:aws:iam::633442604392:role/tastylog-dev-githubations-iam-role" ]; then
-            echo "MATCH: true"
-          else
-            echo "MATCH: false"
-          fi
       - name: Checkout repository 
         uses: actions/checkout@v7
       - name: Setup terraform
@@ -42,6 +35,13 @@ jobs:
       - name: Terraform format
         run: |
           terraform fmt -check -recursive
+      - name: Debug check role ARN
+        run: |
+          if [ "${{ secrets.AWS_IAM_ROLE_ARN }}" = "arn:aws:iam::633442604392:role/tastylog-dev-githubations-iam-role" ]; then
+            echo "MATCH: true"
+          else
+            echo "MATCH: false"
+          fi
       - name: AWS credentials
         uses: aws-actions/configure-aws-credentials@v6
         with:
