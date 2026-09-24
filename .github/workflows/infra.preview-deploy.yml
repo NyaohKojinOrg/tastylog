@@ -30,4 +30,4 @@ jobs:
       - name: Setup terraform
         uses: hashicorp/setup-terraform@v4
         with:
-          terraform_version:n: ${{ env.TF_VERSION }}
+          terraform_version: ${{ env.TF_VERSION }}
