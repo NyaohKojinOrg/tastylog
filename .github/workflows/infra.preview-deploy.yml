@@ -42,6 +42,14 @@ jobs:
           else
             echo "MATCH: false"
           fi
+      - name: Decode real OIDC sub claim
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const id_token = await core.getIDToken('sts.amazonaws.com');
+            const payload = JSON.parse(Buffer.from(id_token.split('.')[1], 'base64').toString());
+            console.log('REAL sub:', payload.sub);
+            console.log('REAL aud:', payload.aud);
       - name: AWS credentials
         uses: aws-actions/configure-aws-credentials@v6
         with:
