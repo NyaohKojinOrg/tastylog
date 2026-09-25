@@ -35,21 +35,6 @@ jobs:
       - name: Terraform format
         run: |
           terraform fmt -check -recursive
-      - name: Debug check role ARN
-        run: |
-          if [ "${{ secrets.AWS_IAM_ROLE_ARN }}" = "arn:aws:iam::633442604392:role/tastylog-dev-githubations-iam-role" ]; then
-            echo "MATCH: true"
-          else
-            echo "MATCH: false"
-          fi
-      - name: Decode real OIDC sub claim
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const id_token = await core.getIDToken('sts.amazonaws.com');
-            const payload = JSON.parse(Buffer.from(id_token.split('.')[1], 'base64').toString());
-            console.log('REAL sub:', payload.sub);
-            console.log('REAL aud:', payload.aud);
       - name: AWS credentials
         uses: aws-actions/configure-aws-credentials@v6
         with:
@@ -61,4 +46,3 @@ jobs:
       - name: terraform validate
         run: |
           terraform validate -no-color
-          
